@@ -1,5 +1,7 @@
 import 'package:employee_attendance/screens/register_screen.dart';
+import 'package:employee_attendance/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -68,17 +70,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 30,),
-                SizedBox(
-                  height: 60,
-                  width: double.infinity,
-                  child: ElevatedButton(onPressed: () {
-
-                  }, style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)
-                      )
-                  ), child: const Text("LOGIN", style: TextStyle(fontSize: 20, color: Colors.white),),),
+                Consumer<AuthService>(
+                  builder: (context, authServiceProvider, child) {
+                    return SizedBox(
+                    height: 60,
+                    width: double.infinity,
+                    child: authServiceProvider.isLoading ? const Center(
+                      child: CircularProgressIndicator(),
+                    ) : ElevatedButton(
+                      onPressed: () {
+                        authServiceProvider.loginEmployee(
+                          _emailController.text.trim(), 
+                          _passwordController.text.trim(), 
+                          context);
+                      }, style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)
+                        )
+                    ), child: const Text("LOGIN", style: TextStyle(fontSize: 20, color: Colors.white),),),
+                  );
+                  },
                 ),
                 
                 const SizedBox(height: 20,),

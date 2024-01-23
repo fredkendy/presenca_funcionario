@@ -1,4 +1,6 @@
+import 'package:employee_attendance/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -81,20 +83,33 @@ class _LoginScreenState extends State<RegisterScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                SizedBox(
-                  height: 60,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30))),
-                    child: const Text(
-                      "REGISTER",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                //this consumer is the concept of Provider
+                Consumer<AuthService>(
+                  builder: (context, authServiceProvider, child) {
+                    return SizedBox(
+                    height: 60,
+                    width: double.infinity,
+                    //se estiver carregando, mostrar animação carregamento
+                    child: authServiceProvider.isLoading ? const Center(
+                      child: CircularProgressIndicator(),
+                    ) : ElevatedButton(
+                      onPressed: () {
+                        authServiceProvider.registerEmployee(
+                          _emailController.text.trim(), 
+                          _passwordController.text.trim(), 
+                          context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30))),
+                      child: const Text(
+                        "REGISTER",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
                     ),
-                  ),
+                  );
+                  }
                 ),
               ],
             ),

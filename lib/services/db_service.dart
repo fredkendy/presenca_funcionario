@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:employee_attendance/constants/constants.dart';
+import 'package:employee_attendance/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -7,6 +8,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class DbService extends ChangeNotifier {
   //instance of supabase client
   final SupabaseClient _supabase = Supabase.instance.client;
+
+  //it can be null
+  UserModel? userModel;
 
   //function to create a random id for employee_id
   String generateRandomEmployeeId() {
@@ -27,5 +31,17 @@ class DbService extends ChangeNotifier {
       'employee_id': generateRandomEmployeeId(),
       'department': null,
     });
+  }
+
+  //it will return a user model
+  Future<UserModel> getUserData() async {
+    //query to go to employee table and get data which equals the id in supabase. single because you now that cannot be more than one employee with the same id
+    final userData = await _supabase
+      .from(Constants.employeeTable)
+      .select()
+      .eq('id', _supabase.auth.currentUser!.id) //! because it cannot be null
+      .single(); 
+    userModel = UserModel.fromJSON(userData); //changing data that comes as json to UserModel
+    return userModel!; //not null
   }
 }

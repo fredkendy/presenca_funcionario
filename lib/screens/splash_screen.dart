@@ -11,6 +11,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
 
+    // USE TO SIGNOUT (WHEN DEBUGGING)
     // authService.signOut();
 
     //checking if is logged, and redirecting 

@@ -1,4 +1,5 @@
 import 'package:employee_attendance/screens/login_screen.dart';
+import 'package:employee_attendance/screens/register_screen.dart';
 import 'package:employee_attendance/screens/splash_screen.dart';
 import 'package:employee_attendance/services/auth_service.dart';
 import 'package:employee_attendance/services/db_service.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
     //declare to flutter know that we have providers (services) in our application
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context)=>AuthService()),
+        ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => DbService()),
       ],
       child: MaterialApp(

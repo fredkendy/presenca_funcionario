@@ -12,7 +12,7 @@ class UserModel {
     required this.email,
     required this.name,
     this.department,  //it can be null
-    required this.employeeId,
+    required this.employeeId
   });
 
   //factory method to convert JSON data coming from supabase

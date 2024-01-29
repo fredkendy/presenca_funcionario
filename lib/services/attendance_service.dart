@@ -22,7 +22,7 @@ class AttendanceService extends ChangeNotifier {
 
   //Variable to hold the month to get/check history 
   //At beginning, it will be only that month only, then can change later
-  String _attendanceHistoryMonth = DateFormat('MMMM yyyyy').format(DateTime.now());
+  String _attendanceHistoryMonth = DateFormat('MMMM yyyy').format(DateTime.now());
 
   String get attendanceHistoryMonth => _attendanceHistoryMonth;
 

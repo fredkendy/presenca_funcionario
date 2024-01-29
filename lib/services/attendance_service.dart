@@ -20,6 +20,17 @@ class AttendanceService extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Variable to hold the month to get/check history 
+  //At beginning, it will be only that month only, then can change later
+  String _attendanceHistoryMonth = DateFormat('MMMM yyyyy').format(DateTime.now());
+
+  String get attendanceHistoryMonth => _attendanceHistoryMonth;
+
+  set attendanceHistoryMonth(String value) {
+    _attendanceHistoryMonth = value;
+    notifyListeners();
+  }
+
   Future getTodayAttendance() async {
     final List result = await _supabase
         .from(Constants.attendanceTable)
@@ -53,4 +64,19 @@ class AttendanceService extends ChangeNotifier {
     //get latest data and update ui
     getTodayAttendance();
   }
+
+  //Checks the date column for the search (list of AttendanceModel)
+  Future<List<AttendanceModel>> getAttendanceHistory() async {
+    final List data = await _supabase
+      .from(Constants.attendanceTable)
+      .select()
+      .eq('employee_id', _supabase.auth.currentUser!.id)
+      //check date column and check all rows which equals to that month
+      .textSearch('date', "'$attendanceHistoryMonth'", config: 'english')
+      .order('created_at', ascending: false);
+
+      //map each attendance and convert in a list
+      return data.map((attendance) => AttendanceModel.fromJSON(attendance)).toList();
+  }
+
 }

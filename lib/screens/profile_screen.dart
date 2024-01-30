@@ -1,3 +1,4 @@
+import 'package:employee_attendance/models/department.dart';
 import 'package:employee_attendance/services/db_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
 
   TextEditingController nameController = TextEditingController();
-  int selectedValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   label: Text("Full name"),
                   border: OutlineInputBorder()
                 ),
-              )
+              ),
+              const SizedBox(height: 15,),
+
+              //DROPDOWN MENU
+              dbService.allDepartments.isEmpty ? const LinearProgressIndicator()
+                : SizedBox(
+                    width: double.infinity,
+                    child: DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder()
+                      ),
+                      //if employee dept is null, use first id of dept
+                      value: dbService.employeeDepartment ?? dbService.allDepartments.first.id,
+                      items: dbService.allDepartments.map((DepartmentModel item) {
+                        return DropdownMenuItem(
+                          value: item.id,
+                          child: Text(
+                            item.title,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (selectedValue) {
+                        //change the employee department
+                        dbService.employeeDepartment = selectedValue;
+                      },
+                    ),
+                ),
+                const SizedBox(height: 40,),
+                SizedBox(
+                  width: 200,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      //Calling function with the text inside the input as parameter
+                      //Don't need to send dept ID as param because it is changed on onChange above
+                      dbService.updateProfile(nameController.text.trim(), context);
+                    },
+                    child: const Text("Update Profile", style: TextStyle(fontSize: 20),),
+                  ),
+                )
             ],
           ),
         ),

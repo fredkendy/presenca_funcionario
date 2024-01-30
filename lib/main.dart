@@ -1,5 +1,3 @@
-import 'package:employee_attendance/screens/login_screen.dart';
-import 'package:employee_attendance/screens/register_screen.dart';
 import 'package:employee_attendance/screens/splash_screen.dart';
 import 'package:employee_attendance/services/attendance_service.dart';
 import 'package:employee_attendance/services/auth_service.dart';

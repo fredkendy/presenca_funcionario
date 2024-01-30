@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:employee_attendance/constants/constants.dart';
+import 'package:employee_attendance/models/department.dart';
 import 'package:employee_attendance/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -11,6 +12,11 @@ class DbService extends ChangeNotifier {
 
   //it can be null
   UserModel? userModel;
+
+  //store departments
+  List<DepartmentModel> allDepartments = [];
+  //current employee department
+  int? employeeDepartment;
 
   //function to create a random id for employee_id
   String generateRandomEmployeeId() {
@@ -42,6 +48,19 @@ class DbService extends ChangeNotifier {
       .eq('id', _supabase.auth.currentUser!.id) //! because it cannot be null
       .single(); 
     userModel = UserModel.fromJSON(userData); //changing data that comes as json to UserModel
+    //using the condition to assign only at the first time (since this function can be called multiple times, it will reset the dep value)
+    employeeDepartment == null 
+      ? employeeDepartment = userModel?.department 
+      : null;
     return userModel!; //not null
+  }
+
+  Future<void> getAllDepartments() async {
+    final List result = await _supabase
+      .from(Constants.departmentTable)
+      .select();
+    allDepartments = result
+      .map((department) => DepartmentModel.fromJSON(department)).toList();
+    notifyListeners();
   }
 }

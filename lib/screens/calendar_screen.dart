@@ -111,7 +111,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   const Text(
-                                    "Check in:",
+                                    "Check out:",
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.black54),
                                   ),

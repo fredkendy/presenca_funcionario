@@ -55,6 +55,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
+                          //If name is not empty, print name. otherwise, id
                           user.name != '' ? user.name : "#${user.employeeId}", 
                           style: const TextStyle(fontSize: 25),
                         ),

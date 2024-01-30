@@ -50,6 +50,7 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  //When called, it notifies the listener, which call the splash screen and go to login page
   Future signOut() async {
     await _supabase.auth.signOut();
     notifyListeners();

@@ -1,4 +1,5 @@
 import 'package:employee_attendance/models/department.dart';
+import 'package:employee_attendance/services/auth_service.dart';
 import 'package:employee_attendance/services/db_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,8 +36,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              //Working on signing out
               Container(
-                margin: const EdgeInsets.only(top: 80),
+                margin: const EdgeInsets.only(top: 30),
+                alignment: Alignment.topRight,
+                child: TextButton.icon(
+                  onPressed: () {
+                    Provider.of<AuthService>(context, listen: false).signOut();
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text("Sign out"),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
                 height: 100,
                 width: 100,
                 decoration: BoxDecoration(
